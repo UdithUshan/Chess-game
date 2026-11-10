@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess | Professional Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<section>
+    <div class="ambient">
+        <div class="ambient-orb"></div>
+        <div class="ambient-orb"></div>
+        <div class="ambient-orb"></div>
+    </div>
+
+    <div class="modal-overlay show" id="colorModal">
+        <div class="modal-content">
+            <div class="modal-title">Select Your Side</div>
+            <div class="modal-subtitle">Choose which color you would like to play</div>
+            <div class="color-selector">
+                <div class="color-choice" onclick="window.game.selectColor('white')">
+                    <div class="color-choice-icon" style="color:#fff;text-shadow:0 0 3px rgba(0,0,0,0.5);">&#9812;</div>
+                    <div class="color-choice-label">WHITE</div>
+                </div>
+                <div class="color-choice" onclick="window.game.selectColor('black')">
+                    <div class="color-choice-icon" style="color:#000;text-shadow:0 0 3px rgba(255,255,255,0.3);">&#9818;</div>
+                    <div class="color-choice-label">BLACK</div>
+                </div>
+                <div class="color-choice" onclick="window.game.selectColor('random')">
+                    <div class="color-choice-icon">&#9830;</div>
+                    <div class="color-choice-label">RANDOM</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="game-panel">
+            <div class="brand">
+                <h1>CHESS</h1>
+                <div class="tagline">Professional Edition</div>
+            </div>
+
+            <div class="player-card" id="top-player">
+                <div class="player-avatar" id="top-avatar" style="color:#000;">&#9818;</div>
+                <div class="player-info-box">
+                    <div class="player-name" id="top-name">Computer</div>
+                    <div class="player-role" id="top-role">BLACK</div>
+                </div>
+                <div class="player-captures" id="top-captures"></div>
+                <div class="player-timer" id="top-timer">10:00</div>
+            </div>
+
+            <div class="board-frame">
+                <div class="board-container">
+                    <div class="board-labels rank-labels" id="rank-labels"></div>
+                    <div class="board" id="board"></div>
+                    <div class="board-labels file-labels" id="file-labels"></div>
+                    <div class="thinking-overlay" id="thinking">
+                        <div class="thinking-spinner"></div>
+                        <div class="thinking-text" id="thinking-text">Analyzing position...</div>
+                        <div class="thinking-depth" id="thinking-depth"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="player-card active" id="bottom-player">
+                <div class="player-avatar" id="bottom-avatar" style="color:#fff;text-shadow:0 0 3px rgba(0,0,0,0.5);">&#9812;</div>
+                <div class="player-info-box">
+                    <div class="player-name" id="bottom-name">You</div>
+                    <div class="player-role" id="bottom-role">WHITE</div>
+                </div>
+                <div class="player-captures" id="bottom-captures"></div>
+                <div class="player-timer" id="bottom-timer">10:00</div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="status-bar" id="status">
+                <div class="status-text">Your turn</div>
+            </div>
+
+            <div class="settings-card">
+                <div class="settings-section">
+                    <div class="settings-label">Difficulty</div>
+                    <div class="option-group">
+                        <button class="option-btn" onclick="window.game.setDifficulty(1)" id="d1">Easy</button>
+                        <button class="option-btn" onclick="window.game.setDifficulty(2)" id="d2">Medium</button>
+                        <button class="option-btn active" onclick="window.game.setDifficulty(3)" id="d3">Hard</button>
+                        <button class="option-btn" onclick="window.game.setDifficulty(4)" id="d4">Expert</button>
+                        <button class="option-btn unbeatable" onclick="window.game.setDifficulty(5)" id="d5">Unbeatable</button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-label">Theme</div>
+                    <div class="option-group">
+                        <button class="option-btn color-btn color-gold active" onclick="window.game.setTheme('gold')"></button>
+                        <button class="option-btn color-btn color-silver" onclick="window.game.setTheme('silver')"></button>
+                        <button class="option-btn color-btn color-blue" onclick="window.game.setTheme('blue')"></button>
+                        <button class="option-btn color-btn color-emerald" onclick="window.game.setTheme('emerald')"></button>
+                        <button class="option-btn color-btn color-rose" onclick="window.game.setTheme('rose')"></button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-label">Board</div>
+                    <div class="option-group">
+                        <button class="option-btn active" onclick="window.game.setBoardStyle('classic')" id="b-classic">Classic</button>
+                        <button class="option-btn" onclick="window.game.setBoardStyle('walnut')" id="b-walnut">Walnut</button>
+                        <button class="option-btn" onclick="window.game.setBoardStyle('marble')" id="b-marble">Marble</button>
+                        <button class="option-btn" onclick="window.game.setBoardStyle('midnight')" id="b-midnight">Midnight</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-card">
+                <div class="history-header">Move History</div>
+                <div class="history-list" id="history-list"></div>
+            </div>
+
+            <div class="action-group">
+                <button class="action-btn primary" onclick="window.game.showColorModal()">New Game</button>
+                <button class="action-btn" onclick="window.game.undoMove()">Undo</button>
+                <button class="action-btn" onclick="window.game.flipBoard()">Flip</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="promoModal">
+        <div class="modal-content">
+            <div class="modal-title">Promote Pawn</div>
+            <div class="modal-subtitle">Select a piece</div>
+            <div class="promo-options" id="promo-options"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="gameOverModal">
+        <div class="modal-content">
+            <div class="result-icon" id="result-icon">&#9812;</div>
+            <div class="result-title" id="result-title">Game Over</div>
+            <div class="result-message" id="result-message">Result</div>
+            <button class="action-btn primary" onclick="window.game.closeGameOver(); window.game.showColorModal();" style="padding:14px 40px;font-size:0.9em;">
+                Play Again
+            </button>
+        </div>
+    </div>
+</section>
+<script src="js/engine.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/ui.js"></script>
+
+</body>
+</html>
